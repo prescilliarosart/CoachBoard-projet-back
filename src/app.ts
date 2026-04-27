@@ -13,7 +13,23 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // Middlewares
-app.use(cors({ origin: ["http://localhost:5173"] }));
+app.use(
+	cors({
+		origin: (origin, callback) => {
+			if (
+				!origin ||
+				origin.endsWith(".vercel.app") ||
+				origin === "http://localhost:5173"
+			) {
+				callback(null, true);
+			} else {
+				callback(new Error("Not allowed by CORS"));
+			}
+		},
+		methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+		allowedHeaders: ["Content-Type", "Authorization"],
+	}),
+);
 app.use(express.json());
 
 // Sert les GIFs en statique
