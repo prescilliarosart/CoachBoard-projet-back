@@ -2,13 +2,13 @@ import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import client from "../../database/client.js";
 
 export const findAll = async () => {
-	const [rows] = await client.query<RowDataPacket[]>("SELECT * FROM suivi");
+	const [rows] = await client.query<RowDataPacket[]>("SELECT * FROM SUIVI");
 	return rows;
 };
 
 export const findById = async (id: string) => {
 	const [rows] = await client.query<RowDataPacket[]>(
-		"SELECT * FROM suivi WHERE id_suivi = ?",
+		"SELECT * FROM SUIVI WHERE ID_SUIVI = ?",
 		[id],
 	);
 	return rows[0] as RowDataPacket | undefined;
@@ -16,7 +16,7 @@ export const findById = async (id: string) => {
 
 export const findBySeance = async (id: string) => {
 	const [rows] = await client.query<RowDataPacket[]>(
-		"SELECT * FROM suivi WHERE id_seance = ?",
+		"SELECT * FROM SUIVI WHERE id_seance = ?",
 		[id],
 	);
 	return rows as RowDataPacket[];
@@ -24,7 +24,7 @@ export const findBySeance = async (id: string) => {
 
 export const findByDate = async (date: string) => {
 	const [rows] = await client.query<RowDataPacket[]>(
-		"SELECT * FROM suivi WHERE date = ?",
+		"SELECT * FROM SUIVI WHERE date = ?",
 		[date],
 	);
 	return rows as RowDataPacket[];
@@ -63,7 +63,7 @@ export const create = async (
 	id_eleve_programme: number,
 ) => {
 	const [result] = await client.query<ResultSetHeader>(
-		"INSERT INTO suivi (charge_soulevee, reps_reelle, poids_corporel, ressenti, commentaires, date, statut, id_seance, id_seances_exercices, id_eleve_programme) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		"INSERT INTO SUIVI (charge_soulevee, reps_reelle, poids_corporel, ressenti, commentaires, date, statut, id_seance, id_seances_exercices, id_eleve_programme) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		[
 			charge_soulevee,
 			reps_reelle,
@@ -94,7 +94,7 @@ export const update = async (
 	id_eleve_programme: number,
 ) => {
 	const [result] = await client.query<ResultSetHeader>(
-		"UPDATE suivi SET charge_soulevee = ?, reps_reelle = ?, poids_corporel = ?, ressenti = ?, commentaires = ?, date = ?, statut = ?, id_seance = ?, id_seances_exercices = ?, id_eleve_programme = ? WHERE id_suivi = ?",
+		"UPDATE SUIVI SET charge_soulevee = ?, reps_reelle = ?, poids_corporel = ?, ressenti = ?, commentaires = ?, date = ?, statut = ?, id_seance = ?, id_seances_exercices = ?, id_eleve_programme = ? WHERE id_suivi = ?",
 		[
 			charge_soulevee,
 			reps_reelle,
@@ -114,7 +114,7 @@ export const update = async (
 
 export const destroy = async (id: string) => {
 	const [result] = await client.query<ResultSetHeader>(
-		"DELETE FROM suivi WHERE id_suivi = ?",
+		"DELETE FROM SUIVI WHERE id_suivi = ?",
 		[id],
 	);
 	return result.affectedRows > 0;
@@ -122,7 +122,7 @@ export const destroy = async (id: string) => {
 
 export const destroyByEleveProgramme = async (id: string) => {
 	const [result] = await client.query<ResultSetHeader>(
-		"DELETE FROM suivi WHERE id_eleve_programme = ?",
+		"DELETE FROM SUIVI WHERE id_eleve_programme = ?",
 		[id],
 	);
 	return result.affectedRows > 0;
@@ -134,7 +134,7 @@ export const checkDejaRealisee = async (
 	id_eleve_programme: string,
 ) => {
 	const [rows] = await client.query<RowDataPacket[]>(
-		"SELECT COUNT(*) as total FROM suivi WHERE id_seance = ? AND date = ? AND id_eleve_programme = ?",
+		"SELECT COUNT(*) as total FROM SUIVI WHERE id_seance = ? AND date = ? AND id_eleve_programme = ?",
 		[id_seance, date, id_eleve_programme],
 	);
 	return (rows[0] as RowDataPacket).total > 0;

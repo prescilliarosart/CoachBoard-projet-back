@@ -2,14 +2,14 @@ import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import client from "../../database/client.js";
 
 export const findAll = async () => {
-	const [rows] = await client.query<RowDataPacket[]>("SELECT * FROM eleves");
+	const [rows] = await client.query<RowDataPacket[]>("SELECT * FROM ELEVES");
 	return rows;
 };
 
 export const search = async (query: string) => {
 	const likeQuery = `%${query}%`;
 	const [rows] = await client.query<RowDataPacket[]>(
-		"SELECT * FROM eleves WHERE prenom LIKE ? OR nom LIKE ?",
+		"SELECT * FROM ELEVES WHERE prenom LIKE ? OR nom LIKE ?",
 		[likeQuery, likeQuery],
 	);
 	return rows;
@@ -17,7 +17,7 @@ export const search = async (query: string) => {
 
 export const findById = async (id: string) => {
 	const [rows] = await client.query<RowDataPacket[]>(
-		"SELECT * FROM eleves WHERE id_eleve = ?",
+		"SELECT * FROM ELEVES WHERE id_eleve = ?",
 		[id],
 	);
 	return rows[0] as RowDataPacket | undefined;
@@ -35,7 +35,7 @@ export const create = async (
 	niveau: string,
 ) => {
 	const [result] = await client.query<ResultSetHeader>(
-		"INSERT INTO eleves (prenom, nom, email, mot_de_passe, age, poids_initial, taille, objectif, niveau) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		"INSERT INTO ELEVES (prenom, nom, email, mot_de_passe, age, poids_initial, taille, objectif, niveau) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		[
 			prenom,
 			nom,
@@ -64,7 +64,7 @@ export const update = async (
 	niveau: string,
 ) => {
 	const [result] = await client.query<ResultSetHeader>(
-		"UPDATE eleves SET prenom = ?, nom = ?, email = ?, mot_de_passe = ?, age = ?, poids_initial = ?, taille = ?, objectif = ?, niveau = ? WHERE id_eleve = ?",
+		"UPDATE ELEVES SET prenom = ?, nom = ?, email = ?, mot_de_passe = ?, age = ?, poids_initial = ?, taille = ?, objectif = ?, niveau = ? WHERE id_eleve = ?",
 		[
 			prenom,
 			nom,
@@ -83,7 +83,7 @@ export const update = async (
 
 export const destroy = async (id: string) => {
 	const [result] = await client.query<ResultSetHeader>(
-		"DELETE FROM eleves WHERE id_eleve = ?",
+		"DELETE FROM ELEVES WHERE id_eleve = ?",
 		[id],
 	);
 	return result.affectedRows > 0;

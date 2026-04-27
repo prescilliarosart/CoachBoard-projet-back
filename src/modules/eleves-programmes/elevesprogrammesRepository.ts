@@ -3,14 +3,14 @@ import client from "../../database/client.js";
 
 export const findAll = async () => {
 	const [rows] = await client.query<RowDataPacket[]>(
-		"SELECT * FROM eleves_programmes",
+		"SELECT * FROM ELEVES_PROGRAMMES",
 	);
 	return rows;
 };
 
 export const findById = async (id: string) => {
 	const [rows] = await client.query<RowDataPacket[]>(
-		"SELECT * FROM eleves_programmes WHERE id_eleve_programme = ?",
+		"SELECT * FROM ELEVES_PROGRAMMES WHERE ID_ELEVE_PROGRAMME = ?",
 		[id],
 	);
 	return rows[0] as RowDataPacket | undefined;
@@ -18,12 +18,12 @@ export const findById = async (id: string) => {
 
 export const findByEleve = async (id: string) => {
 	const [rows] = await client.query<RowDataPacket[]>(
-		`SELECT ep.id_eleve_programme, ep.date_debut, ep.date_fin, ep.statut,
-		ep.id_programme,
-            p.nom, p.objectif, p.duree
-     FROM eleves_programmes ep
-     JOIN programmes p ON ep.id_programme = p.id_programme
-     WHERE ep.id_eleve = ?`,
+		`SELECT ep.ID_ELEVE_PROGRAMME, ep.DATE_DEBUT, ep.DATE_FIN, ep.STATUT,
+		ep.ID_PROGRAMME,
+            p.NOM, p.OBJECTIF, p.DUREE
+     FROM ELEVES_PROGRAMMES ep
+     JOIN PROGRAMMES p ON ep.ID_PROGRAMME = p.ID_PROGRAMME
+     WHERE ep.ID_ELEVE = ?`,
 		[id],
 	);
 	return rows as RowDataPacket[];
@@ -31,7 +31,7 @@ export const findByEleve = async (id: string) => {
 
 export const findByProgramme = async (id: string) => {
 	const [rows] = await client.query<RowDataPacket[]>(
-		"SELECT * FROM eleves_programmes WHERE id_programme = ?",
+		"SELECT * FROM ELEVES_PROGRAMMES WHERE id_programme = ?",
 		[id],
 	);
 	return rows as RowDataPacket[];
@@ -45,7 +45,7 @@ export const create = async (
 	id_programme: number,
 ) => {
 	const [result] = await client.query<ResultSetHeader>(
-		"INSERT INTO eleves_programmes (date_debut, statut, date_fin, id_eleve, id_programme) VALUES (?, ?, ?, ?, ?)",
+		"INSERT INTO ELEVES_PROGRAMMES (date_debut, statut, date_fin, id_eleve, id_programme) VALUES (?, ?, ?, ?, ?)",
 		[date_debut, statut, date_fin, id_eleve, id_programme],
 	);
 	return result.insertId;
@@ -60,7 +60,7 @@ export const update = async (
 	id_programme: number,
 ) => {
 	const [result] = await client.query<ResultSetHeader>(
-		"UPDATE eleves_programmes SET date_debut = ?, statut = ?, date_fin = ?, id_eleve = ?, id_programme = ? WHERE id_eleve_programme = ?",
+		"UPDATE ELEVES_PROGRAMMES SET date_debut = ?, statut = ?, date_fin = ?, id_eleve = ?, id_programme = ? WHERE ID_ELEVE_PROGRAMME = ?",
 		[date_debut, statut, date_fin, id_eleve, id_programme, id],
 	);
 	return result.affectedRows > 0;
@@ -68,7 +68,7 @@ export const update = async (
 
 export const destroy = async (id: string) => {
 	const [result] = await client.query<ResultSetHeader>(
-		"DELETE FROM eleves_programmes WHERE id_eleve_programme = ?",
+		"DELETE FROM ELEVES_PROGRAMMES WHERE id_eleve_programme = ?",
 		[id],
 	);
 	return result.affectedRows > 0;
